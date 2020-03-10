@@ -210,7 +210,7 @@ renderIce ( w, h ) =
 
 
 renderPlayer : ( Int, Int ) -> Player -> Svg Msg
-renderPlayer ( w, h ) { position } =
+renderPlayer ( w, h ) { position, color } =
     let
         x =
             toFloat w * position.x |> String.fromFloat
@@ -225,7 +225,7 @@ renderPlayer ( w, h ) { position } =
         [ Attributes.cx x
         , Attributes.cy y
         , Attributes.r radius
-        , fill softWhite
+        , fill color
         ]
         []
 

@@ -12,37 +12,61 @@
   </head>
 
   <body style="margin: 0; padding: 0; background-color: #012;">
-    <div id="root"></div>
+      <div id="root"></div>
   </body>
 
   <script type="text/javascript">
-    var app = Elm.Main.init({
-      node: document.getElementById("root"),
-      flags: {
-        height: window.innerHeight,
-        width: window.innerWidth
-      }
-    });
+   function sound(src) {
+       this.sound = document.createElement("audio");
+       this.sound.src = src;
+       this.sound.setAttribute("preload", "auto");
+       this.sound.setAttribute("controls", "none");
+       this.sound.style.display = "none";
+       document.body.appendChild(this.sound);
+       this.play = function(){
+           this.sound.play();
+       }
+       this.stop = function(){
+           this.sound.pause();
+       }
+   }
+   var soundtrack;
+   var app = Elm.Main.init({
+       node: document.getElementById("root"),
+       flags: {
+           height: window.innerHeight,
+           width: window.innerWidth
+       }
+   });
 
-    document.addEventListener("keydown", function(event) {
-            app.ports.keyDown.send(event.key);
-    }, true);
+   app.ports.onStart.subscribe(function (data){
+       soundtrack = new sound("https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Ziklibrenbib/Bisou/Musical_spaceshift/Bisou_-_10_-_Bad_Flower.mp3");
+       soundtrack.play();
+   });
 
-    document.addEventListener("keyup", function(event) {
-            app.ports.keyUp.send(event.key);
-    }, true);
+   app.ports.onEnd.subscribe(function (data) {
+       soundtrack.stop();
+   });
 
-    document.addEventListener("onresize", function() {
-      j = {
-        height: window.innerHeight,
-        width: window.innerWidth
-      }
+   document.addEventListener("keydown", function(event) {
+       app.ports.keyDown.send(event.key);
+   }, true);
 
-      app.ports.onResize.send(j);
+   document.addEventListener("keyup", function(event) {
+       app.ports.keyUp.send(event.key);
+   }, true);
 
-    }, true);
+   document.addEventListener("onresize", function() {
+       j = {
+           height: window.innerHeight,
+           width: window.innerWidth
+       }
 
-    
+       app.ports.onResize.send(j);
+
+   }, true);
+
+
   </script>
 
   <noscript>

@@ -1,4 +1,4 @@
-port module Subscription exposing (Msg(..), subscriptions, decodeTuple)
+port module Subscription exposing (Msg(..), decodeTuple, onStart, onEnd, subscriptions)
 
 import Browser.Events exposing (onAnimationFrameDelta)
 import Json.Decode as Decode
@@ -57,7 +57,8 @@ keyDecoder =
 toDirection : String -> KeyCode
 toDirection string =
     let
-        toUpper = String.toUpper string
+        toUpper =
+            String.toUpper string
     in
     case toUpper of
         "A" ->
@@ -79,7 +80,7 @@ toDirection string =
             73
 
         " " ->
-          32
+            32
 
         _ ->
             0
@@ -122,6 +123,10 @@ onResize : (( Int, Int ) -> msg) -> Sub msg
 onResize toMsg =
     windowResize (\val -> toMsg (decodeTuple val))
 
+
+port onStart : () -> Cmd msg
+
+port onEnd : () -> Cmd msg
 
 type alias Temp =
     { height : Int

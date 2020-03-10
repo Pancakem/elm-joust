@@ -25,6 +25,7 @@ type alias Player =
     , jumpKey : KeyCode
     , position : Vector
     , velocity : Vector
+    , color : String
     }
 
 
@@ -35,14 +36,14 @@ type alias Round =
 initialScene : Scene
 initialScene =
     { t = 0
-    , player1 = createPlayer 'A' 'D' 'W' 0.25
-    , player2 = createPlayer 'J' 'L' 'I' 0.75
+    , player1 = createPlayer 'A' 'D' 'W' 0.25 "rgba(128, 0, 0, 1)"
+    , player2 = createPlayer 'J' 'L' 'I' 0.75 "rgba(255, 255, 0, 1)"
     , round = newRound
     }
 
 
-createPlayer : Char -> Char -> Char -> Float -> Player
-createPlayer leftKey rightKey jumpKey posX =
+createPlayer : Char -> Char -> Char -> Float -> String -> Player
+createPlayer leftKey rightKey jumpKey posX colr =
     { score = 0
     , homePosX = posX
     , leftKey = Char.toCode leftKey
@@ -50,6 +51,7 @@ createPlayer leftKey rightKey jumpKey posX =
     , jumpKey = Char.toCode jumpKey
     , position = { x = posX, y = playerHomePosY }
     , velocity = { x = 0, y = 0 }
+    , color = colr
     }
 
 

@@ -64,18 +64,18 @@ update action ({ ui, scene } as model) =
                 isGameOver =
                     player1___.score >= winScore || player2___.score >= winScore
 
-                ( round_, screen_ ) =
+                ( round_, screen_, cmd) =
                     if isGameOver then
-                        ( round, GameoverScreen )
+                        ( round, GameoverScreen, onEnd () )
 
                     else if isRoundOver then
-                        ( newRound, PlayScreen )
+                        ( newRound, PlayScreen, Cmd.none )
 
                     else if hasAnyPlayerFallen then
-                        ( { round | touchdownTime = round.touchdownTime + delta }, PlayScreen )
+                        ( { round | touchdownTime = round.touchdownTime + delta }, PlayScreen, Cmd.none )
 
                     else
-                        ( round, PlayScreen )
+                        ( round, PlayScreen, Cmd.none )
 
                 scene_ =
                     { scene
@@ -93,7 +93,7 @@ update action ({ ui, scene } as model) =
             ( handleKeyChange pressed keycode model, Cmd.none )
 
         StartGame ->
-            ( freshGame ui, Cmd.none )
+            ( freshGame ui, onStart () )
 
         TimeSecond _ ->
             ( { model | secondsPassed = model.secondsPassed + 1 }, Cmd.none )
